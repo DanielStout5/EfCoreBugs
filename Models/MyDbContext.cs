@@ -9,7 +9,10 @@ namespace EfCoreOpenJson.Models
         public DbSet<BookCover> BookCovers { get; set; }
 
         [DbFunction("OPENJSON", IsBuiltIn = true)]
-        public static IQueryable<JsonResult> OpenJson(string json, string path) => throw new NotSupportedException();
+        public static IQueryable<JsonResult> OpenJson(object json) => throw new NotSupportedException();
+
+        [DbFunction("OPENJSON", IsBuiltIn = true)]
+        public static IQueryable<JsonResult> OpenJson(object json, string path) => throw new NotSupportedException();
 
         public MyDbContext(DbContextOptions<MyDbContext> opts) : base(opts)
         {
@@ -18,7 +21,9 @@ namespace EfCoreOpenJson.Models
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.HasDbFunction(typeof(MyDbContext).GetMethod(nameof(OpenJson), new[] { typeof(string), typeof(string) })!);
+            builder.HasDbFunction(typeof(MyDbContext).GetMethod(nameof(OpenJson), new[] { typeof(object) })!, b => b.HasParameter("json").HasStoreType("nvarchar(max)"));
+            builder.HasDbFunction(typeof(MyDbContext).GetMethod(nameof(OpenJson), new[] { typeof(object), typeof(string) })!, b => b.HasParameter("json").HasStoreType("nvarchar(max)"));
+
             builder.Entity<Book>(b => b.Property(x => x.Data).IsJson());
 
             // Prevent migration error "Cannot scaffold C# literals of type 'System.Reflection.NullabilityInfoContext'"

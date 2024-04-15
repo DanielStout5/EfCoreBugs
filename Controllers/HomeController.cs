@@ -18,8 +18,8 @@ namespace EfCoreOpenJson.Controllers
 
         public async Task<IActionResult> Index()
         {
-            await db.Books.OrderBy(x => x.Title)
-                .SelectMany(x => MyDbContext.OpenJson((string)(object)x.Data!, "$.Genres").Select(x => x.Value))
+            var result = await db.Books.OrderBy(x => x.Title)
+                .SelectMany(x => MyDbContext.OpenJson(x.Data!, "$.Genres").Select(x => x.Value))
                 .Distinct()
                 .OrderBy(x => x)
                 .ToListAsync();
