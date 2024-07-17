@@ -11,7 +11,7 @@ namespace EfCoreOpenJson.Models
         [DbFunction("OPENJSON", IsBuiltIn = true)]
         public static IQueryable<JsonResult> OpenJson(object json) => throw new NotSupportedException();
 
-        [DbFunction("OPENJSON", IsBuiltIn = true)]
+        [DbFunction("openjson", IsBuiltIn = true)]
         public static IQueryable<JsonResult> OpenJson(object json, string path) => throw new NotSupportedException();
 
         public MyDbContext(DbContextOptions<MyDbContext> opts) : base(opts)

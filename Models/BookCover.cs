@@ -1,9 +1,7 @@
 ﻿namespace EfCoreOpenJson.Models
 {
-    public class BookCover
+    public class BookCover : BookCover2
     {
-        public int Id { get; set; }
-
         public int BookId { get; set; }
 
         public Book? Book { get; set; }
